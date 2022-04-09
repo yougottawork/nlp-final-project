@@ -60,6 +60,9 @@ with open("review_yelp.csv") as f, open("reviews_weighted.txt", 'w') as g:
                 wordlist2.append(word)
             numword = len(wordlist2)
             for word in wordlist2:
+                if (word.isupper() and len(word) != 1 and word != 'OK'):
+                    capword += 1
+            for word in wordlist2:
                 if word.lower() in extremewords:
                     extword += 1
             for word in wordlist2:
@@ -69,9 +72,6 @@ with open("review_yelp.csv") as f, open("reviews_weighted.txt", 'w') as g:
                 tagged = nltk.tag.pos_tag((str1).split())
                 edited_sentence = [word for word,tag in tagged if tag == 'NNP']
                 propernouns = len(edited_sentence)
-            for word in wordlist2:
-                if (word.isupper() and len(word) != 1 and word != 'OK'):
-                    capword += 1
             most_tags = max(useful_tags , funny_tags , cool_tags)
             if (most_tags == useful_tags) :
                 for word in wordlist2:

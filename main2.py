@@ -70,7 +70,7 @@ with open("review_yelp.csv") as f, open("reviews_weighted.txt", 'w') as g:
                 edited_sentence = [word for word,tag in tagged if tag == 'NNP']
                 propernouns = len(edited_sentence)
             for word in wordlist2:
-                if (word.isupper() and len(word) != 1 and word != 'OK' and word not in edited_sentence):
+                if (word.isupper() and len(word) != 1 and word != 'OK'):
                     capword += 1
             most_tags = max(useful_tags , funny_tags , cool_tags)
             if (most_tags == useful_tags) :

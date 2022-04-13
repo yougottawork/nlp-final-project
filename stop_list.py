@@ -18,5 +18,5 @@ closed_class_stop_words = ['a','the','an','and','or','but','about','above','afte
                            'everyone', 'everyplace', 'everything' 'everywhere', 'whatever',\
                            'whenever', 'whereever', 'whichever', 'whoever', 'whomever' 'he',\
                            'him', 'his', 'her', 'she', 'it', 'they', 'them', 'its', 'their','theirs',\
-                           'you','your','yours','me','my','mine','I','we','us','much','and/or'
+                           'you','your','yours','me','my','mine','I','we','us','much','and/or', 'i'
                            ]

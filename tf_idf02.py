@@ -9,15 +9,21 @@ lemmatizer = WordNetLemmatizer()
 from nltk.stem.porter import * 
 ps = PorterStemmer()
 
-from stop_list import closed_class_stop_words as stop_list
+from stop_list import closed_class_stop_words as stoplist
 review_word_collection = {} # {review_id: [word1, word2, ...]}
+num_review = 1000
 review_id = 1
+useful_lst = [] 
 with open("no_header_review_yelp.txt", errors = "ignore") as f:
     # print(f)
     for line in f:
-        if review_id <= 5: # Making the first 100 lines the train set 
+        if review_id <= num_review: # Making the first 100 lines the train set 
             # Strip the quotation marks and spaces 
             stars, useful, funny, cool, review = line.strip("").strip().split('\t')
+            if int(useful) > 0: 
+                useful_lst.append(1)
+            else: 
+                useful_lst.append(0)
             review_words = review.split()
             for word in review_words: 
                 # In here, I strip off all punctuation to isolate the words. 
@@ -25,8 +31,10 @@ with open("no_header_review_yelp.txt", errors = "ignore") as f:
                 # Ignore digits and punctuation characters 
                 # If it's a valid word, we will turn it into lowercase and then lemmatize it, then add into review_id word list 
                 word = word.strip(string.punctuation)
+                word = word.strip()
+                word = word.lower() # lowercase to standardize everything
                 # word = ps.stem(word) # Stemming may or may not help. I've chosen not to use it for now
-                if word in stop_list: 
+                if word in stoplist: 
                     pass 
                 elif word.isdigit() == True or word.isalpha() == False: 
                     pass
@@ -35,7 +43,7 @@ with open("no_header_review_yelp.txt", errors = "ignore") as f:
                 else: 
                     if review_id not in review_word_collection: 
                         review_word_collection[review_id] = [] # initialize key to empty list 
-                    word = word.lower() # lowercase to standardize everything
+                    # word = word.lower() 
                     word = lemmatizer.lemmatize(word)
                     review_word_collection[review_id].append(word) # add in all cases 
             # print(review_word_collection)
@@ -54,7 +62,7 @@ for rev_id, rev_word_list in review_word_collection.items():
         else:
             word_freq[word] += 1 # increase count if in word_freq
 # print(word_freq)
-total_review = 5 # total number of reviews
+total_review = num_review # total number of reviews
 # print(total_review)
 
 
@@ -75,6 +83,15 @@ for rev_id, rev_word_list in review_word_collection.items():  # Iterate through 
         TFIDF_review[-1][term] = math.floor(term_freq * IDF * 1000) / 1000  # TFIDF (term freq) * (Inverse Doc Freq)
 
 print(TFIDF_review)
+print(useful_lst)
+
+out = open("out.txt", "w")
+
+for i in range(len(useful_lst)): 
+    out.write(str(useful_lst[i]) + "\t" + str(TFIDF_review[i]) + "\n")
+
+out.close()
+
 
 # from encodings.aliases import aliases
 # alias_values = set(aliases.values())

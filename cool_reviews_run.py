@@ -18,7 +18,7 @@ with open("no_header_review_yelp.txt", errors = "ignore") as f:
     for line in f: 
         temp = line.split('\t')
         weight = 0
-        cool = temp[2].strip("\t")
+        cool = temp[3].strip("\t")
         if cool.isdigit() == True:
             if int(cool) >= 3:
                 weight = int(cool)
